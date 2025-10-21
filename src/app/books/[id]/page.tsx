@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { Badge } from '@/components/ui/badge';
 
 export default function BookDetailPage({ params }: { params: { id: string } }) {
   const book = books.find(b => b.id === params.id);
@@ -19,6 +20,10 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
   }
 
   const [selectedSize, setSelectedSize] = useState<BookSize>(book.sizes[0]);
+
+  const discountPercentage = book.originalPrice
+    ? Math.round(((book.originalPrice - book.price) / book.originalPrice) * 100)
+    : 0;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -62,6 +67,11 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
                     <p className="text-xl text-muted-foreground line-through">
                     ₹{book.originalPrice.toFixed(2)}
                     </p>
+                )}
+                {discountPercentage > 0 && (
+                  <Badge variant="destructive" className="text-base">
+                    {discountPercentage}% OFF
+                  </Badge>
                 )}
               </div>
               

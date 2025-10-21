@@ -3,13 +3,17 @@ import Link from 'next/link';
 import type { Book } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
-import { Button } from '../ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface BookCardProps {
   book: Book;
 }
 
 export function BookCard({ book }: BookCardProps) {
+  const discountPercentage = book.originalPrice
+    ? Math.round(((book.originalPrice - book.price) / book.originalPrice) * 100)
+    : 0;
+
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1">
       <Link href={`/books/${book.id}`} className="group block">
@@ -24,12 +28,12 @@ export function BookCard({ book }: BookCardProps) {
         </div>
       </Link>
       <CardContent className="flex flex-grow flex-col p-4">
-        <h3 className="flex-grow font-headline text-base font-bold leading-tight">
+        <h3 className="flex-grow font-headline text-base font-bold leading-tight truncate">
           <Link href={`/books/${book.id}`} className="hover:underline">
             {book.title}
           </Link>
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground">{book.author}</p>
+        <p className="mt-1 text-sm text-muted-foreground truncate">{book.author}</p>
         <div className="mt-2 flex items-baseline gap-2">
           <p className="font-headline text-lg font-bold text-primary">
             ₹{book.price.toFixed(2)}
@@ -38,6 +42,11 @@ export function BookCard({ book }: BookCardProps) {
             <p className="text-sm text-muted-foreground line-through">
               ₹{book.originalPrice.toFixed(2)}
             </p>
+          )}
+          {discountPercentage > 0 && (
+            <Badge variant="destructive" className="text-xs">
+              {discountPercentage}% off
+            </Badge>
           )}
         </div>
         <AddToCartButton book={book} selectedSize={book.sizes[0]} className="mt-4 w-full" />
