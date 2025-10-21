@@ -30,20 +30,22 @@ const adminNavItems = [
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
-    const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
-    setIsAuthenticated(isAdmin);
-    setIsLoading(false);
-
-    if (!isAdmin && pathname !== '/admin/login') {
-      router.replace('/admin/login');
+    try {
+      const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
+      setIsAuthenticated(isAdmin);
+      if (!isAdmin && pathname !== '/admin/login') {
+        router.replace('/admin/login');
+      }
+    } catch (e) {
+      // sessionStorage is not available on the server
+      setIsAuthenticated(false);
     }
   }, [router, pathname]);
-
-  if (isLoading) {
+  
+  if (typeof isAuthenticated === 'undefined') {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -58,6 +60,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
      if (pathname === '/admin/login') {
       return <>{children}</>;
     }
+    // router.replace should have already been called in useEffect
     return null;
   }
   
