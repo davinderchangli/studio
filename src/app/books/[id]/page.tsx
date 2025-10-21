@@ -11,6 +11,7 @@ import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
+import { QuantityInput } from '@/components/cart/quantity-input';
 
 export default function BookDetailPage({ params }: { params: { id: string } }) {
   const book = books.find(b => b.id === params.id);
@@ -20,6 +21,7 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
   }
 
   const [selectedSize, setSelectedSize] = useState<BookSize>(book.sizes[0]);
+  const [quantity, setQuantity] = useState(1);
 
   const discountPercentage = book.originalPrice
     ? Math.round(((book.originalPrice - book.price) / book.originalPrice) * 100)
@@ -45,23 +47,25 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
             <div className="space-y-6">
               <div>
                 <h1 className="font-headline text-3xl font-bold md:text-4xl">{book.title}</h1>
-                <p className="mt-2 text-xl text-muted-foreground">{book.author}</p>
+                <p className="mt-2 text-xl text-muted-foreground">by {book.author}</p>
               </div>
               <p className="text-lg leading-relaxed">{book.description}</p>
               
-              <div className="space-y-4">
-                <h3 className="font-headline text-lg font-semibold">Select Size</h3>
-                <RadioGroup value={selectedSize} onValueChange={(value: BookSize) => setSelectedSize(value)} className="flex gap-4">
-                  {book.sizes.map(size => (
-                    <div key={size} className="flex items-center space-x-2">
-                      <RadioGroupItem value={size} id={size} />
-                      <Label htmlFor={size} className="cursor-pointer text-base">{size}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </div>
+              {book.sizes.length > 1 && (
+                <div className="space-y-4">
+                  <h3 className="font-headline text-lg font-semibold">Select Size</h3>
+                  <RadioGroup value={selectedSize} onValueChange={(value: BookSize) => setSelectedSize(value)} className="flex gap-4">
+                    {book.sizes.map(size => (
+                      <div key={size} className="flex items-center space-x-2">
+                        <RadioGroupItem value={size} id={size} />
+                        <Label htmlFor={size} className="cursor-pointer text-base">{size}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+              )}
 
-              <div className="flex items-baseline gap-4">
+              <div className="flex items-center gap-4">
                 <p className="font-headline text-4xl font-bold text-primary">₹{book.price.toFixed(2)}</p>
                  {book.originalPrice && (
                     <p className="text-xl text-muted-foreground line-through">
@@ -69,13 +73,18 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
                     </p>
                 )}
                 {discountPercentage > 0 && (
-                  <Badge variant="destructive" className="text-base">
-                    {discountPercentage}% OFF
+                  <Badge variant="destructive">
+                    SAVE {discountPercentage}%
                   </Badge>
                 )}
               </div>
+
+              <div className="space-y-2">
+                <Label>Quantity</Label>
+                <QuantityInput value={quantity} onChange={setQuantity} />
+              </div>
               
-              <AddToCartButton book={book} selectedSize={selectedSize} size="lg" className="w-full" />
+              <AddToCartButton book={book} selectedSize={selectedSize} quantity={quantity} size="lg" className="w-full md:w-auto" />
             </div>
           </div>
         </div>

@@ -9,13 +9,14 @@ import type { ComponentProps } from 'react';
 interface AddToCartButtonProps extends ComponentProps<typeof Button> {
   book: Book;
   selectedSize: BookSize;
+  quantity?: number;
 }
 
-export function AddToCartButton({ book, selectedSize, ...props }: AddToCartButtonProps) {
+export function AddToCartButton({ book, selectedSize, quantity = 1, ...props }: AddToCartButtonProps) {
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    addToCart(book, selectedSize);
+    addToCart(book, selectedSize, quantity);
   };
 
   return (
