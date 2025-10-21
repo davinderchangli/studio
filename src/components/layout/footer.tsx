@@ -24,8 +24,11 @@ export function Footer() {
           <div className="space-y-2">
             <h4 className="font-headline font-semibold">Information</h4>
             <ul className="space-y-1">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
+              <li><Link href="/about-us" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link href="/contact-us" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
+              <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+              <li><Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              <li><Link href="/disclaimer" className="text-sm text-muted-foreground hover:text-primary">Disclaimer</Link></li>
               <li><Link href="/admin/login" className="text-sm text-muted-foreground hover:text-primary">Admin Login</Link></li>
             </ul>
           </div>
