@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { BookOpen, Search, ShoppingCart, User } from 'lucide-react';
+import { BookOpen, Search, ShoppingCart, User, Heart } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
 
 import { Button } from '@/components/ui/button';
@@ -51,6 +51,13 @@ export function Header() {
               </Badge>
             )}
           </div>
+
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/wishlist">
+              <Heart className="h-5 w-5" />
+              <span className="sr-only">Wishlist</span>
+            </Link>
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
