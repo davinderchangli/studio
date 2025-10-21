@@ -7,18 +7,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useAdminAuth } from '@/context/admin-auth-context';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAdminAuth();
   const router = useRouter();
   const { toast } = useToast();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (email === 'admin@kitaba.com' && password === 'admin') {
-      // In a real app, you'd use a more secure session management method.
-      sessionStorage.setItem('isAdminAuthenticated', 'true');
+      login();
       toast({
         title: 'Login Successful',
         description: 'Welcome to the admin panel.',
@@ -65,7 +66,7 @@ export default function AdminLoginPage() {
                 placeholder="admin"
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full active:bg-red-600">
               Login
             </Button>
           </form>

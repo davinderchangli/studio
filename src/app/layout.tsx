@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { CartProvider } from '@/context/cart-context';
 import { WishlistProvider } from '@/context/wishlist-context';
+import { AdminAuthProvider } from '@/context/admin-auth-context';
 
 export const metadata: Metadata = {
   title: 'Kitaba Di Dunia',
@@ -25,12 +26,14 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <WishlistProvider>
-          <CartProvider>
-            {children}
-            <Toaster />
-          </CartProvider>
-        </WishlistProvider>
+        <AdminAuthProvider>
+          <WishlistProvider>
+            <CartProvider>
+              {children}
+              <Toaster />
+            </CartProvider>
+          </WishlistProvider>
+        </AdminAuthProvider>
       </body>
     </html>
   );

@@ -19,6 +19,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAdminAuth } from '@/context/admin-auth-context';
 
 const adminNavItems = [
   { href: '/admin', icon: Home, label: 'Dashboard' },
@@ -30,37 +31,24 @@ const adminNavItems = [
 function AdminDashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
+  const { isAdmin, loading } = useAdminAuth();
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
-      if (!isAdmin) {
+    if (!loading && !isAdmin) {
         router.replace('/admin/login');
-      }
     }
-  }, [isClient, pathname, router]);
+  }, [isAdmin, loading, router]);
 
-  if (!isClient) {
+
+  if (loading || !isAdmin) {
     return (
        <div className="flex h-screen w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-           <Skeleton className="h-10 w-48" />
-           <Skeleton className="h-screen w-full" />
+           <p>Loading...</p>
         </div>
       </div>
     );
   }
-  
-    const isAdmin = isClient && sessionStorage.getItem('isAdminAuthenticated') === 'true';
-
-    if (!isAdmin) {
-        return null;
-    }
 
   return (
     <SidebarProvider>
