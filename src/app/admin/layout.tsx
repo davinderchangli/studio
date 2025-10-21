@@ -27,32 +27,27 @@ const adminNavItems = [
   { href: '/admin/users', icon: Users, label: 'Users' },
 ];
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+function AdminDashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This check will only run on the client-side
-    const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
-    setIsAuthenticated(isAdmin);
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated === false && pathname !== '/admin/login') {
-      router.replace('/admin/login');
+    if (isClient) {
+      const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
+      if (!isAdmin) {
+        router.replace('/admin/login');
+      }
     }
-  }, [isAuthenticated, pathname, router]);
+  }, [isClient, pathname, router]);
 
-  // If we are on the login page, just render it.
-  if (pathname === '/admin/login') {
-    return <>{children}</>;
-  }
-  
-  // Show a loading state while we check for authentication.
-  if (isAuthenticated === null) {
+  if (!isClient) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
+       <div className="flex h-screen w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
            <Skeleton className="h-10 w-48" />
            <Skeleton className="h-screen w-full" />
@@ -60,14 +55,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       </div>
     );
   }
-
-  // If not authenticated and not on login page, we will be redirected by the useEffect above.
-  // This prevents content from flashing before redirect.
-  if (!isAuthenticated) {
-    return null;
-  }
   
-  // If authenticated, show the admin dashboard.
+    const isAdmin = isClient && sessionStorage.getItem('isAdminAuthenticated') === 'true';
+
+    if (!isAdmin) {
+        return null;
+    }
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -125,4 +119,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       </SidebarInset>
     </SidebarProvider>
   );
+}
+
+
+export default function AdminLayout({ children }: { children: ReactNode }) {
+    const pathname = usePathname();
+
+    if (pathname === '/admin/login') {
+        return <>{children}</>;
+    }
+
+    return <AdminDashboardLayout>{children}</AdminDashboardLayout>;
 }
