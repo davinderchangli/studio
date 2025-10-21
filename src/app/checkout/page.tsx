@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useToast } from '@/hooks/use-toast';
@@ -94,18 +95,18 @@ export default function CheckoutPage() {
                 <CardContent>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Full Name</FormLabel>
-                              <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
                         <FormField
                           control={form.control}
                           name="phone"
@@ -117,25 +118,25 @@ export default function CheckoutPage() {
                             </FormItem>
                           )}
                         />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email (Optional)</FormLabel>
+                              <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
-                       <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email (Optional)</FormLabel>
-                            <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
                       <FormField
                         control={form.control}
                         name="address"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Street Address</FormLabel>
-                            <FormControl><Input placeholder="123 Literary Lane" {...field} /></FormControl>
+                            <FormControl><Textarea placeholder="123 Literary Lane, Apt 4B" {...field} rows={3} /></FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
