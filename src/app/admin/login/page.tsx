@@ -62,6 +62,7 @@ export default function AdminLoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="admin"
               />
             </div>
             <Button type="submit" className="w-full">
