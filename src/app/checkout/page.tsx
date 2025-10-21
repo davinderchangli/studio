@@ -20,7 +20,7 @@ const addressSchema = z.object({
   address: z.string().min(5, 'Address is required.'),
   country: z.string().min(2, 'Country is required.'),
   state: z.string().min(2, 'State is required.'),
-  zip: z.string().regex(/^\d{6}$/, 'A valid 6-digit zip code is required.'),
+  zip: z.string().regex(/^\d{6}$/, 'A valid 6-digit pin code is required.'),
   city: z.string().min(2, 'City is required.'),
 });
 
@@ -65,6 +65,27 @@ export default function CheckoutPage() {
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="mb-8 font-headline text-3xl font-bold">Checkout</h1>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
+             <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-headline">Order Summary</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {cartItems.map(item => (
+                    <div key={item.id} className="flex items-center justify-between">
+                      <span className="text-sm">{item.book.title} x {item.quantity}</span>
+                      <span className="text-sm font-medium">₹{(item.book.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                  ))}
+                  <div className="border-t pt-4">
+                    <div className="flex justify-between font-bold">
+                      <span className="font-headline text-lg">Total</span>
+                      <span className="font-headline text-lg">₹{cartTotal.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
             <div className="lg:col-span-3">
               <Card>
                 <CardHeader>
@@ -170,28 +191,6 @@ export default function CheckoutPage() {
                        <Button type="submit" size="lg" className="w-full">Place Order</Button>
                     </form>
                   </Form>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline">Order Summary</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {cartItems.map(item => (
-                    <div key={item.id} className="flex items-center justify-between">
-                      <span className="text-sm">{item.book.title} x {item.quantity}</span>
-                      <span className="text-sm font-medium">₹{(item.book.price * item.quantity).toFixed(2)}</span>
-                    </div>
-                  ))}
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between font-bold">
-                      <span className="font-headline text-lg">Total</span>
-                      <span className="font-headline text-lg">₹{cartTotal.toFixed(2)}</span>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             </div>
