@@ -5,12 +5,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { AddToWishlistButton } from '@/components/wishlist/add-to-wishlist-button';
 import { Heart } from 'lucide-react';
+import { BuyNowButton } from '@/components/cart/buy-now-button';
 
 interface BookCardProps {
   book: Book;
+  showBuyNow?: boolean;
 }
 
-export function BookCard({ book }: BookCardProps) {
+export function BookCard({ book, showBuyNow = false }: BookCardProps) {
   const discountPercentage = book.originalPrice
     ? Math.round(((book.originalPrice - book.price) / book.originalPrice) * 100)
     : 0;
@@ -63,7 +65,11 @@ export function BookCard({ book }: BookCardProps) {
         </div>
 
         <div className="mt-auto pt-4">
-          <AddToCartButton book={book} selectedSize={book.sizes[0]} className="w-full" />
+          {showBuyNow ? (
+            <BuyNowButton book={book} selectedSize={book.sizes[0]} className="w-full" />
+          ) : (
+            <AddToCartButton book={book} selectedSize={book.sizes[0]} className="w-full" />
+          )}
         </div>
       </CardContent>
     </Card>

@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (book: Book, size: BookSize, quantity?: number) => void;
+  addToCart: (book: Book, size: BookSize, quantity?: number, showToast?: boolean) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -20,7 +20,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const { toast } = useToast();
 
-  const addToCart = (book: Book, size: BookSize, quantity: number = 1) => {
+  const addToCart = (book: Book, size: BookSize, quantity: number = 1, showToast: boolean = true) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.book.id === book.id && item.size === size);
       if (existingItem) {
@@ -31,10 +31,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const newItemId = `${book.id}-${size}`;
       return [...prevItems, { id: newItemId, book, quantity, size }];
     });
-    toast({
-      title: "Added to cart",
-      description: `${book.title} has been added to your cart.`,
-    });
+    if (showToast) {
+      toast({
+        title: "Added to cart",
+        description: `${book.title} has been added to your cart.`,
+      });
+    }
   };
 
   const removeFromCart = (itemId: string) => {
