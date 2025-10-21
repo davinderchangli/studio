@@ -42,6 +42,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
+      <CategoryNav categories={categories} />
       <main className="flex-grow">
         <section className="relative w-full bg-primary/10 py-20 md:py-32">
           <div className="container mx-auto grid grid-cols-1 items-center gap-8 px-4 md:grid-cols-2 md:px-6">
@@ -71,8 +72,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <CategoryNav categories={categories} />
 
         <section id="featured-books" className="py-12 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
