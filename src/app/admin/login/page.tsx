@@ -9,13 +9,14 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
   const { toast } = useToast();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin') {
+    if (email === 'admin@kitaba.com' && password === 'admin') {
       // In a real app, you'd use a more secure session management method.
       sessionStorage.setItem('isAdminAuthenticated', 'true');
       toast({
@@ -27,7 +28,7 @@ export default function AdminLoginPage() {
       toast({
         variant: 'destructive',
         title: 'Login Failed',
-        description: 'Incorrect password. Please try again.',
+        description: 'Incorrect email or password. Please try again.',
       });
       setPassword('');
     }
@@ -38,10 +39,21 @@ export default function AdminLoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="font-headline text-2xl">Admin Access</CardTitle>
-          <CardDescription>Enter the admin password to continue.</CardDescription>
+          <CardDescription>Enter your admin credentials to continue.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@kitaba.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input
