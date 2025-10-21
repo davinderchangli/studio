@@ -15,11 +15,13 @@ import { useRouter } from 'next/navigation';
 
 const addressSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
+  phone: z.string().regex(/^\d{10}$/, 'Phone number must be 10 digits.'),
+  email: z.string().email('Please enter a valid email address.').optional().or(z.literal('')),
   address: z.string().min(5, 'Address is required.'),
-  city: z.string().min(2, 'City is required.'),
-  state: z.string().min(2, 'State is required.'),
-  zip: z.string().min(5, 'A valid zip code is required.'),
   country: z.string().min(2, 'Country is required.'),
+  state: z.string().min(2, 'State is required.'),
+  zip: z.string().regex(/^\d{6}$/, 'A valid 6-digit zip code is required.'),
+  city: z.string().min(2, 'City is required.'),
 });
 
 type AddressFormValues = z.infer<typeof addressSchema>;
@@ -31,7 +33,7 @@ export default function CheckoutPage() {
 
   const form = useForm<AddressFormValues>({
     resolver: zodResolver(addressSchema),
-    defaultValues: { name: '', address: '', city: '', state: '', zip: '', country: '' },
+    defaultValues: { name: '', phone: '', email: '', address: '', city: '', state: '', zip: '', country: '' },
   });
 
   const onSubmit = (data: AddressFormValues) => {
@@ -71,13 +73,37 @@ export default function CheckoutPage() {
                 <CardContent>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <FormField
+                       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Full Name</FormLabel>
+                              <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone Number</FormLabel>
+                              <FormControl><Input type="tel" placeholder="10-digit mobile number" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                       <FormField
                         control={form.control}
-                        name="name"
+                        name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Full Name</FormLabel>
-                            <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
+                            <FormLabel>Email (Optional)</FormLabel>
+                            <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -96,16 +122,16 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <FormField
                           control={form.control}
-                          name="city"
+                          name="country"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>City</FormLabel>
-                              <FormControl><Input placeholder="Bookville" {...field} /></FormControl>
+                              <FormLabel>Country</FormLabel>
+                              <FormControl><Input placeholder="Lekhakistan" {...field} /></FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <FormField
+                         <FormField
                           control={form.control}
                           name="state"
                           render={({ field }) => (
@@ -124,18 +150,18 @@ export default function CheckoutPage() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>ZIP / Postal Code</FormLabel>
-                              <FormControl><Input placeholder="12345" {...field} /></FormControl>
+                              <FormControl><Input placeholder="6-digit pin code" {...field} /></FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <FormField
+                         <FormField
                           control={form.control}
-                          name="country"
+                          name="city"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Country</FormLabel>
-                              <FormControl><Input placeholder="Lekhakistan" {...field} /></FormControl>
+                              <FormLabel>City</FormLabel>
+                              <FormControl><Input placeholder="Bookville" {...field} /></FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
