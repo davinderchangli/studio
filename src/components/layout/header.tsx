@@ -35,6 +35,13 @@ export function Header() {
           </div>
         </div>
         <nav className="flex items-center gap-4">
+           <Button variant="ghost" size="icon" asChild>
+            <Link href="/wishlist">
+              <Heart className="h-5 w-5" />
+              <span className="sr-only">Wishlist</span>
+            </Link>
+          </Button>
+
           <div className="relative">
             <Button variant="ghost" size="icon" asChild>
               <Link href="/cart">
@@ -51,13 +58,6 @@ export function Header() {
               </Badge>
             )}
           </div>
-
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/wishlist">
-              <Heart className="h-5 w-5" />
-              <span className="sr-only">Wishlist</span>
-            </Link>
-          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
