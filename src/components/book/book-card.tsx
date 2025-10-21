@@ -28,28 +28,32 @@ export function BookCard({ book }: BookCardProps) {
         </div>
       </Link>
       <CardContent className="flex flex-grow flex-col p-4">
-        <h3 className="flex-grow font-headline text-base font-bold leading-tight truncate">
+        <h3 className="font-headline text-base font-bold leading-tight truncate">
           <Link href={`/books/${book.id}`} className="hover:underline">
             {book.title}
           </Link>
         </h3>
         <p className="mt-1 text-sm text-muted-foreground truncate">{book.author}</p>
+        
         <div className="mt-2 flex items-baseline gap-2">
-          <p className="font-headline text-lg font-bold text-primary">
-            ₹{book.price.toFixed(2)}
+           <p className="font-headline text-lg font-bold text-primary">
+            ₹{book.price.toFixed(0)}
           </p>
           {book.originalPrice && (
             <p className="text-sm text-muted-foreground line-through">
-              ₹{book.originalPrice.toFixed(2)}
+              ₹{book.originalPrice.toFixed(0)}
             </p>
           )}
           {discountPercentage > 0 && (
-            <Badge variant="destructive" className="text-xs">
+            <p className="text-sm font-semibold text-green-600">
               {discountPercentage}% off
-            </Badge>
+            </p>
           )}
         </div>
-        <AddToCartButton book={book} selectedSize={book.sizes[0]} className="mt-4 w-full" />
+
+        <div className="mt-auto pt-4">
+          <AddToCartButton book={book} selectedSize={book.sizes[0]} className="w-full" />
+        </div>
       </CardContent>
     </Card>
   );
