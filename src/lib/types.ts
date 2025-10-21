@@ -1,4 +1,4 @@
-export type BookSize = 'Paperback' | 'Hardcover' | 'E-book';
+export type BookSize = 'Paperback' | 'Hardcover';
 
 export interface Book {
   id: string;

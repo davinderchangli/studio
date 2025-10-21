@@ -41,7 +41,7 @@ export const books: Book[] = [
     price: 1399,
     categoryIds: ['2', '4'],
     ...getImage('book-2'),
-    sizes: ['Paperback', 'Hardcover', 'E-book'],
+    sizes: ['Paperback', 'Hardcover'],
   },
   {
     id: '3',
@@ -52,7 +52,7 @@ export const books: Book[] = [
     originalPrice: 1299,
     categoryIds: ['3', '8'],
     ...getImage('book-3'),
-    sizes: ['Paperback', 'E-book'],
+    sizes: ['Paperback'],
   },
   {
     id: '4',
@@ -103,7 +103,7 @@ export const books: Book[] = [
     price: 1299,
     categoryIds: ['2', '8'],
     ...getImage('book-8'),
-    sizes: ['Paperback', 'Hardcover', 'E-book'],
+    sizes: ['Paperback', 'Hardcover'],
   },
   {
     id: '9',
@@ -113,7 +113,7 @@ export const books: Book[] = [
     price: 1499,
     categoryIds: ['2', '3'],
     ...getImage('book-9'),
-    sizes: ['Paperback', 'E-book'],
+    sizes: ['Paperback'],
   },
   {
     id: '10',
@@ -134,7 +134,7 @@ export const books: Book[] = [
     price: 1599,
     categoryIds: ['2'],
     ...getImage('book-11'),
-    sizes: ['Paperback', 'Hardcover', 'E-book'],
+    sizes: ['Paperback', 'Hardcover'],
   },
   {
     id: '12',
