@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === 'admin@kitaba.com' && password === '5055') {
+    if (email === 'admin@kitaba.com' && password === 'admin') {
       // In a real app, you'd use a more secure session management method.
       sessionStorage.setItem('isAdminAuthenticated', 'true');
       toast({
@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="5055"
+                placeholder="admin"
               />
             </div>
             <Button type="submit" className="w-full">

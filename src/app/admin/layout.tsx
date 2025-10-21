@@ -30,22 +30,27 @@ const adminNavItems = [
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    try {
-      const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
-      setIsAuthenticated(isAdmin);
-      if (!isAdmin && pathname !== '/admin/login') {
-        router.replace('/admin/login');
-      }
-    } catch (e) {
-      // sessionStorage is not available on the server
-      setIsAuthenticated(false);
+    // This check will only run on the client-side
+    const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
+    setIsAuthenticated(isAdmin);
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated === false && pathname !== '/admin/login') {
+      router.replace('/admin/login');
     }
-  }, [router, pathname]);
+  }, [isAuthenticated, pathname, router]);
+
+  // If we are on the login page, just render it.
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
   
-  if (typeof isAuthenticated === 'undefined') {
+  // Show a loading state while we check for authentication.
+  if (isAuthenticated === null) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -56,14 +61,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
+  // If not authenticated and not on login page, we will be redirected by the useEffect above.
+  // This prevents content from flashing before redirect.
   if (!isAuthenticated) {
-     if (pathname === '/admin/login') {
-      return <>{children}</>;
-    }
-    // router.replace should have already been called in useEffect
     return null;
   }
   
+  // If authenticated, show the admin dashboard.
   return (
     <SidebarProvider>
       <Sidebar>
