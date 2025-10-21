@@ -12,6 +12,8 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
 import { QuantityInput } from '@/components/cart/quantity-input';
+import { AddToWishlistButton } from '@/components/wishlist/add-to-wishlist-button';
+import { Separator } from '@/components/ui/separator';
 
 export default function BookDetailPage({ params }: { params: { id: string } }) {
   const book = books.find(b => b.id === params.id);
@@ -79,12 +81,19 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
                 )}
               </div>
 
-              <div className="space-y-2">
-                <Label>Quantity</Label>
-                <QuantityInput value={quantity} onChange={setQuantity} />
+              <Separator />
+
+              <div className="space-y-4">
+                <div className='flex items-end gap-4'>
+                    <div className="space-y-2">
+                        <Label>Quantity</Label>
+                        <QuantityInput value={quantity} onChange={setQuantity} />
+                    </div>
+                    <AddToCartButton book={book} selectedSize={selectedSize} quantity={quantity} size="lg" className="flex-grow" />
+                </div>
+                <AddToWishlistButton book={book} variant="outline" size="lg" className="w-full" />
               </div>
               
-              <AddToCartButton book={book} selectedSize={selectedSize} quantity={quantity} size="lg" className="w-full md:w-auto" />
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { BookOpen, Search, ShoppingCart, User, Heart } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
+import { useWishlist } from '@/context/wishlist-context';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +17,7 @@ import {
 
 export function Header() {
   const { itemCount } = useCart();
+  const { wishlistItemCount } = useWishlist();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -35,12 +37,22 @@ export function Header() {
           </div>
         </div>
         <nav className="flex items-center gap-4">
-           <Button variant="ghost" size="icon" asChild>
-            <Link href="/wishlist">
-              <Heart className="h-5 w-5" />
-              <span className="sr-only">Wishlist</span>
-            </Link>
-          </Button>
+          <div className="relative">
+             <Button variant="ghost" size="icon" asChild>
+              <Link href="/wishlist">
+                <Heart className="h-5 w-5" />
+                <span className="sr-only">Wishlist</span>
+              </Link>
+            </Button>
+            {wishlistItemCount > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full p-0"
+              >
+                {wishlistItemCount}
+              </Badge>
+            )}
+           </div>
 
           <div className="relative">
             <Button variant="ghost" size="icon" asChild>

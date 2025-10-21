@@ -3,7 +3,8 @@ import Link from 'next/link';
 import type { Book } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
-import { Badge } from '@/components/ui/badge';
+import { AddToWishlistButton } from '@/components/wishlist/add-to-wishlist-button';
+import { Heart } from 'lucide-react';
 
 interface BookCardProps {
   book: Book;
@@ -16,17 +17,27 @@ export function BookCard({ book }: BookCardProps) {
 
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1">
-      <Link href={`/books/${book.id}`} className="group block">
-        <div className="relative aspect-[2/3] w-full">
-          <Image
-            src={book.imageUrl}
-            alt={book.title}
-            data-ai-hint={book.imageHint}
-            fill
-            className="rounded-t-md object-cover"
-          />
-        </div>
-      </Link>
+       <div className="relative">
+        <Link href={`/books/${book.id}`} className="group block">
+          <div className="relative aspect-[2/3] w-full">
+            <Image
+              src={book.imageUrl}
+              alt={book.title}
+              data-ai-hint={book.imageHint}
+              fill
+              className="rounded-t-md object-cover"
+            />
+          </div>
+        </Link>
+        <AddToWishlistButton 
+          book={book} 
+          variant="ghost" 
+          size="icon" 
+          className="absolute top-2 right-2 bg-white/80 backdrop-blur-sm rounded-full text-red-500 hover:text-red-600 hover:bg-white"
+        >
+          <Heart className="h-5 w-5" />
+        </AddToWishlistButton>
+      </div>
       <CardContent className="flex flex-grow flex-col p-4">
         <h3 className="font-headline text-base font-bold leading-tight truncate">
           <Link href={`/books/${book.id}`} className="hover:underline">

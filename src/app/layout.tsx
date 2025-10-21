@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { CartProvider } from '@/context/cart-context';
+import { WishlistProvider } from '@/context/wishlist-context';
 
 export const metadata: Metadata = {
   title: 'Kitaba Di Dunia',
@@ -24,10 +25,12 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <CartProvider>
-          {children}
-          <Toaster />
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider>
+            {children}
+            <Toaster />
+          </CartProvider>
+        </WishlistProvider>
       </body>
     </html>
   );
