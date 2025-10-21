@@ -55,7 +55,7 @@ export function CartItem({ item }: CartItemProps) {
         </div>
       </div>
       <div className="text-right">
-        <p className="font-headline font-semibold">${(item.book.price * item.quantity).toFixed(2)}</p>
+        <p className="font-headline font-semibold">₹{(item.book.price * item.quantity).toFixed(2)}</p>
         <Button variant="ghost" size="icon" className="mt-2 h-8 w-8" onClick={() => removeFromCart(item.id)}>
           <X className="h-4 w-4" />
           <span className="sr-only">Remove item</span>

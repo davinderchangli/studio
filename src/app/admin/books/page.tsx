@@ -32,7 +32,7 @@ export default function AdminBooksPage() {
                 <TableRow key={book.id}>
                   <TableCell className="font-medium">{book.title}</TableCell>
                   <TableCell>{book.author}</TableCell>
-                  <TableCell>${book.price.toFixed(2)}</TableCell>
+                  <TableCell>₹{book.price.toFixed(2)}</TableCell>
                   <TableCell>
                     <Button variant="outline" size="sm">Edit</Button>
                   </TableCell>

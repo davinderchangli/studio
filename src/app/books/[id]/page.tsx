@@ -56,8 +56,13 @@ export default function BookDetailPage({ params }: { params: { id: string } }) {
                 </RadioGroup>
               </div>
 
-              <div className="flex items-end justify-between">
-                <p className="font-headline text-4xl font-bold text-primary">${book.price.toFixed(2)}</p>
+              <div className="flex items-baseline gap-4">
+                <p className="font-headline text-4xl font-bold text-primary">₹{book.price.toFixed(2)}</p>
+                 {book.originalPrice && (
+                    <p className="text-xl text-muted-foreground line-through">
+                    ₹{book.originalPrice.toFixed(2)}
+                    </p>
+                )}
               </div>
               
               <AddToCartButton book={book} selectedSize={selectedSize} size="lg" className="w-full" />
