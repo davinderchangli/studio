@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Bell, BookOpen, Home, Package, ShoppingCart, Users, Settings } from 'lucide-react';
 import {
   SidebarProvider,
@@ -27,22 +27,24 @@ const adminNavItems = [
   { href: '/admin/users', icon: Users, label: 'Users' },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // In a real app, you'd have a more robust auth check.
     const isAdmin = sessionStorage.getItem('isAdminAuthenticated') === 'true';
     setIsAuthenticated(isAdmin);
-    if (!isAdmin) {
+    setIsLoading(false);
+
+    if (!isAdmin && pathname !== '/admin/login') {
       router.replace('/admin/login');
     }
   }, [router, pathname]);
 
-  if (isAuthenticated === null || !isAuthenticated) {
-     return (
+  if (isLoading) {
+    return (
       <div className="flex h-screen w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
            <Skeleton className="h-10 w-48" />
@@ -50,6 +52,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </div>
     );
+  }
+
+  if (!isAuthenticated) {
+     if (pathname === '/admin/login') {
+      return <>{children}</>;
+    }
+    return null;
   }
   
   return (
