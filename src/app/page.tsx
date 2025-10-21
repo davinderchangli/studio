@@ -1,7 +1,7 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-
 import { books, categories } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { BookCard } from '@/components/book/book-card';
@@ -9,11 +9,35 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { CategoryNav } from '@/components/layout/category-nav';
 import { placeholderImages } from '@/lib/placeholder-images.json';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import { useState, useEffect } from 'react';
+import type { CarouselApi } from '@/components/ui/carousel';
 
 const heroImage = placeholderImages.find(p => p.id === 'hero');
 
 export default function Home() {
-  const featuredBooks = books.slice(0, 8);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -35,13 +59,15 @@ export default function Home() {
               </Button>
             </div>
             <div className="relative h-64 w-full md:h-96">
-             {heroImage && <Image
-                src={heroImage.imageUrl}
-                alt={heroImage.description}
-                data-ai-hint={heroImage.imageHint}
-                fill
-                className="rounded-lg object-cover shadow-2xl"
-              />}
+              {heroImage && (
+                <Image
+                  src={heroImage.imageUrl}
+                  alt={heroImage.description}
+                  data-ai-hint={heroImage.imageHint}
+                  fill
+                  className="rounded-lg object-cover shadow-2xl"
+                />
+              )}
             </div>
           </div>
         </section>
@@ -58,10 +84,31 @@ export default function Home() {
                 <Link href="/books">View All</Link>
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
-              {featuredBooks.map(book => (
-                <BookCard key={book.id} book={book} />
-              ))}
+            <Carousel
+              setApi={setApi}
+              opts={{
+                align: 'start',
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {books.map((book, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="md:basis-1/4 lg:basis-1/7"
+                  >
+                    <div className="p-1">
+                      <BookCard book={book} />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+            <div className="py-2 text-center text-sm text-muted-foreground">
+              {current} of {count}
             </div>
           </div>
         </section>
